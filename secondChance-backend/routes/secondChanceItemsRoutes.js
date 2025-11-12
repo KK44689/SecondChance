@@ -55,7 +55,8 @@ router.post('/', upload.single('file'), async (req, res, next) => {
         const collection = await db.collection(collectionName);
 
         //Step 3: task 3 - Create a new secondChanceItem from the request body
-        const newItem = req.body;
+        let newItem = req.body;
+        console.log(newItem);
 
         //Step 3: task 4 - Get the last id, increment it by 1, and set it to the new secondChanceItem
         const lastItem = collection.find().sort({ "id": -1 }).limit(1);
@@ -69,7 +70,7 @@ router.post('/', upload.single('file'), async (req, res, next) => {
         //Task 6: Add the secondChanceItem to the database
         newItem = await collection.insertOne(newItem);
 
-        res.status(201).json(secondChanceItem.ops[0]);
+        res.status(201).json(newItem);
     } catch (e) {
         next(e);
     }
@@ -122,7 +123,7 @@ router.put('/:id', async (req, res, next) => {
         item.updatedAt = new Date();
 
         const updatedItem = await collection.findOneAndUpdate(
-            { id },
+            { id: id },
             { $set: item },
             { returnDocument: 'after' },
         );

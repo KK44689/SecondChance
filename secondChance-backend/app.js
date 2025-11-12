@@ -1,15 +1,16 @@
 /*jshint esversion: 8 */
 require('dotenv').config();
+const secondChanceItemsroutes = require('./routes/secondChanceItemsRoutes.js')
 const express = require('express');
 const cors = require('cors');
 const pinoLogger = require('./logger');
 
 const connectToDatabase = require('./models/db');
-const {loadData} = require("./util/import-mongo/index");
+const { loadData } = require("./util/import-mongo/index");
 
 
 const app = express();
-app.use("*",cors());
+app.use("*", cors());
 const port = 3060;
 
 // Connect to MongoDB; we just do this one time
@@ -22,6 +23,7 @@ connectToDatabase().then(() => {
 app.use(express.json());
 
 // Route files
+app.use("/api/secondchance/items", secondChanceItemsroutes);
 
 // authRoutes Step 2: import the authRoutes and store in a constant called authRoutes
 //{{insert code here}}
@@ -55,7 +57,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Internal Server Error');
 });
 
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.send("Inside the server")
 })
 
