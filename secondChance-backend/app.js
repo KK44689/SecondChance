@@ -1,6 +1,7 @@
 /*jshint esversion: 8 */
 require('dotenv').config();
-const secondChanceItemsroutes = require('./routes/secondChanceItemsRoutes.js')
+const secondChanceItemsroutes = require('./routes/secondChanceItemsRoutes.js');
+const searchRoutes = require('./routes/searchRoutes.js');
 const express = require('express');
 const cors = require('cors');
 const pinoLogger = require('./logger');
@@ -32,7 +33,7 @@ app.use("/api/secondchance/items", secondChanceItemsroutes);
 //{{insert code here}}
 
 // Search API Task 1: import the searchRoutes and store in a constant called searchRoutes
-//{{insert code here}}
+app.use("/api/secondchance/search", searchRoutes);
 
 
 const pinoHttp = require('pino-http');
