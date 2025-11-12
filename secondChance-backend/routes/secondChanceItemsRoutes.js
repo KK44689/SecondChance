@@ -71,10 +71,16 @@ router.post('/', upload.single('file'), async (req, res, next) => {
 // Get a single secondChanceItem by ID
 router.get('/:id', async (req, res, next) => {
     try {
-        //Step 4: task 1 - insert code here
-        //Step 4: task 2 - insert code here
-        //Step 4: task 3 - insert code here
-        //Step 4: task 4 - insert code here
+        const id = req.params.id;
+        //Task 1: Retrieve the database connection from db.js and store the connection in the db constant
+        const db = await connectToDatabase();
+        //Task 2: Use the collection() method to retrieve the secondChanceItems collection
+        const collection = await db.collection(collectionName);
+        //Task 3: Find a specific secondChanceItem by its ID using the collection.fineOne() method. Store it in a constant called secondChanceItem
+        const secondChanceItem = await collection.findOne({ "id": id });
+        //Task 4: Return the secondChanceItem as a JSON object. Return an error message if the item is not found
+        if(!secondChanceItem) return res.status(404).json('Item not found.');
+        res.json(secondChanceItem);
     } catch (e) {
         next(e);
     }
