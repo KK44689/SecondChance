@@ -133,7 +133,7 @@ router.put('/:id', async (req, res, next) => {
         } else {
             res.json({ "uploaded": "failed" });
         }
-        
+
     } catch (e) {
         next(e);
     }
@@ -142,10 +142,25 @@ router.put('/:id', async (req, res, next) => {
 // Delete an existing item
 router.delete('/:id', async (req, res, next) => {
     try {
-        //Step 6: task 1 - insert code here
-        //Step 6: task 2 - insert code here
-        //Step 6: task 3 - insert code here
-        //Step 6: task 4 - insert code here
+        const id = req.params.id;
+
+        //Task 1: Retrieve the database connection from db.js and store the connection to the db constant
+        const db = await connectToDatabase();
+
+        //Task 2: Use the collection() method to retrieve the secondChanceItem collection
+        const collection = await db.collection(collectionName);
+
+        //Task 3: Find a specific secondChanceItem by ID using the collection.fineOne() method and send an appropriate message if it doesn't exist
+        const item = await collection.findOne({ id: id });
+        if (!item) {
+            logger.error("secondChanceItem not found");
+            return res.status(404).json({ error: "secondChanceItem not found" });
+        }
+
+        //Task 4: Delete the object and send an appropriate message
+        await collection.deleteOne(item);
+        res.json({ "deleted": "success" });
+
     } catch (e) {
         next(e);
     }
