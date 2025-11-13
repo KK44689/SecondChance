@@ -2,6 +2,7 @@
 require('dotenv').config();
 const secondChanceItemsroutes = require('./routes/secondChanceItemsRoutes.js');
 const searchRoutes = require('./routes/searchRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
 const express = require('express');
 const cors = require('cors');
 const pinoLogger = require('./logger');
@@ -27,7 +28,7 @@ app.use(express.json());
 app.use("/api/secondchance/items", secondChanceItemsroutes);
 
 // authRoutes Step 2: import the authRoutes and store in a constant called authRoutes
-//{{insert code here}}
+app.use("/api/auth", authRoutes);
 
 // Items API Task 1: import the secondChanceItemsRoutes and store in a constant called secondChanceItemsRoutes
 //{{insert code here}}
