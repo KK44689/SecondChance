@@ -8,14 +8,14 @@ router.get('/', async (req, res, next) => {
     // Task 1: Connect to MongoDB using connectToDatabase database. Remember to use the await keyword and store the connection in `db`
     const db = await connectToDatabase()
 
-    const collection = db.collection("secondChanceItems")
+    const collection = db.collection('secondChanceItems')
 
     // Initialize the query object
-    let query = {}
+    const query = {}
 
     // Add the name filter to the query if the name parameter is not empty
     if (req.query.name && req.query.name.trim() !== '') {
-      query.name = { $regex: req.query.name, $options: "i" } // Using regex for partial match, case-insensitive
+      query.name = { $regex: req.query.name, $options: 'i' } // Using regex for partial match, case-insensitive
     }
 
     // Task 3: Add other filters to the query
