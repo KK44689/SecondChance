@@ -1,7 +1,5 @@
 const express = require('express')
 const multer = require('multer')
-const path = require('path')
-const fs = require('fs')
 const router = express.Router()
 const connectToDatabase = require('../models/db')
 const logger = require('../logger')
@@ -12,10 +10,10 @@ const directoryPath = 'public/images'
 // Set up storage for uploaded files
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, directoryPath); // Specify the upload directory
+    cb(null, directoryPath) // Specify the upload directory
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname); // Use the original file name
+    cb(null, file.originalname) // Use the original file name
   }
 })
 
@@ -63,8 +61,8 @@ router.post('/', upload.single('file'), async (req, res, next) => {
       newItem.id = (parseInt(item.id) + 1).toString()
     })
     // Step 3: task 5 - Set the current date to the new item
-    const date_added = Math.floor(new Date().getTime() / 1000)
-    newItem.date_added = date_added
+    const dateAdded = Math.floor(new Date().getTime() / 1000)
+    newItem.date_added = dateAdded
 
     // Task 6: Add the secondChanceItem to the database
     newItem = await collection.insertOne(newItem)
@@ -73,7 +71,7 @@ router.post('/', upload.single('file'), async (req, res, next) => {
   } catch (e) {
     next(e)
   }
-});
+})
 
 // Get a single secondChanceItem by ID
 router.get('/:id', async (req, res, next) => {
@@ -94,14 +92,14 @@ router.get('/:id', async (req, res, next) => {
   } catch (e) {
     next(e)
   }
-});
+})
 
 // Update and existing item
 router.put('/:id', async (req, res, next) => {
   try {
     const id = req.params.id
     // Task 1: Retrieve the dtabase connection from db.js and store the connection to a db constant
-    const db = await connectToDatabase();
+    const db = await connectToDatabase()
 
     // Task 2: Use the collection() method to retrieve the secondChanceItems collection
     const collection = await db.collection(collectionName)
@@ -124,14 +122,14 @@ router.put('/:id', async (req, res, next) => {
     const updatedItem = await collection.findOneAndUpdate(
       { id: id },
       { $set: item },
-      { returnDocument: 'after' },
+      { returnDocument: 'after' }
     )
 
     // Task 5: Send confirmation
     if (updatedItem) {
-      res.json({ 'uploaded': 'success' })
+      res.json({ uploaded: 'success' })
     } else {
-      res.json({ 'uploaded': 'failed' })
+      res.json({ uploaded: 'failed' })
     }
   } catch (e) {
     next(e)
@@ -158,7 +156,7 @@ router.delete('/:id', async (req, res, next) => {
 
     // Task 4: Delete the object and send an appropriate message
     await collection.deleteOne(item)
-    res.json({ 'deleted': 'success' })
+    res.json({ deleted: 'success' })
   } catch (e) {
     next(e)
   }
