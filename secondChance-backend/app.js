@@ -1,4 +1,4 @@
-/*jshint esversion: 8 */
+/* jshint esversion: 8 */
 require('dotenv').config();
 const secondChanceItemsroutes = require('./routes/secondChanceItemsRoutes.js');
 const searchRoutes = require('./routes/searchRoutes.js');
@@ -8,8 +8,6 @@ const cors = require('cors');
 const pinoLogger = require('./logger');
 const path = require('path');
 const connectToDatabase = require('./models/db');
-const { loadData } = require("./util/import-mongo/index");
-
 
 const app = express();
 app.use("*", cors());
@@ -21,9 +19,8 @@ connectToDatabase().then(() => {
 })
     .catch((e) => console.error('Failed to connect to DB', e));
 
-
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(path.dirname(), 'public')));
 // Route files
 app.use("/api/secondchance/items", secondChanceItemsroutes);
 
@@ -54,7 +51,7 @@ app.use(pinoHttp({ logger }));
 
 
 // Global Error Handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     console.error(err);
     res.status(500).send('Internal Server Error');
 });
